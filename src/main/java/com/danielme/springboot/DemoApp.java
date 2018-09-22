@@ -5,11 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 import com.danielme.springboot.repositories.CountryRepository;
 
 @SpringBootApplication
-public class DemoApp //implements CommandLineRunner 
+public class DemoApp extends SpringBootServletInitializer//implements CommandLineRunner 
 {
 
 	/*private static final Logger logger = Logger.getLogger(DemoApp.class);
