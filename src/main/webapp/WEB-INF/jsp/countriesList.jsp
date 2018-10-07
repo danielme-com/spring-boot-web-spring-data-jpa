@@ -9,23 +9,24 @@
 <title>Spring Boot</title>
 </head>
 <body>
-	<h1>Countries</h1>
-	<hr>
+    <h1>Countries</h1>
+    <hr>
 
-	<c:choose>
-		<c:when test="${not empty countriesList}">
+    <c:choose>
+        <c:when test="${not empty countriesList}">
 
-			<ul>
-				<c:forEach var="item" items="${countriesList}">
-					<li>${item.name}:<fmt:formatNumber value="${item.population}" /></li>
-				</c:forEach>
-			</ul>
+            <ul>
+                <c:forEach var="item" items="${countriesList}">
+                    <li>${item.name}:<fmt:formatNumber
+                            value="${item.population}" /></li>
+                </c:forEach>
+            </ul>
 
-		</c:when>
-		<c:otherwise>
-			<b>NO DATA</b>
-		</c:otherwise>
-	</c:choose>
+        </c:when>
+        <c:otherwise>
+            <b>NO DATA</b>
+        </c:otherwise>
+    </c:choose>
 
 
 </body>

@@ -12,21 +12,23 @@ import com.danielme.springboot.repositories.CountryRepository;
 
 @SpringBootApplication
 @EnableConfigurationProperties(CustomProperties.class)
-public class DemoApp extends SpringBootServletInitializer//implements CommandLineRunner 
+public class DemoApp extends SpringBootServletInitializer// implements CommandLineRunner
 {
 
-	/*private static final Logger logger = Logger.getLogger(DemoApp.class);
-	
-	@Autowired
-	CountryRepository countryRepository;*/
-	
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApp.class, args);
-	}
+    /*
+     * private static final Logger logger = Logger.getLogger(DemoApp.class);
+     * 
+     * @Autowired CountryRepository countryRepository;
+     */
 
-	/*@Override
-	public void run(String... arg0) throws Exception {
-		logger.info(countryRepository.count());		
-	}*/	
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApp.class, args);
+    }
+
+    /*
+     * @Override 
+     * public void run(String... arg0) throws Exception {
+     * logger.info(countryRepository.count()); }
+     */
 
 }
