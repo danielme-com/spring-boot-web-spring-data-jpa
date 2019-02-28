@@ -4,7 +4,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ import com.danielme.springboot.services.CountryService;
 @RequestMapping(CountryRestController.COUNTRY_RESOURCE)
 public class CountryRestController {
 
-    private static final Logger logger = Logger.getLogger(CountryRestController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CountryRestController.class);
     
     public static final String COUNTRY_RESOURCE = "/api/country";
 

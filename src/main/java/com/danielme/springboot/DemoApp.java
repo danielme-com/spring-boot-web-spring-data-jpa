@@ -1,6 +1,7 @@
 package com.danielme.springboot;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +18,7 @@ import com.danielme.springboot.services.CountryService;
 public class DemoApp extends SpringBootServletInitializer// implements CommandLineRunner
 {
 
-    // private static final Logger logger = Logger.getLogger(DemoApp.class);
+    //private static final Logger logger = LoggerFactory.getLogger(DemoApp.class);
 
     // @Autowired
     // CountryService countryService;

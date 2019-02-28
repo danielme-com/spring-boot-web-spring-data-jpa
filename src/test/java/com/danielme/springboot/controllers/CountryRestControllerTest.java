@@ -8,9 +8,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +35,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 @AutoConfigureMockMvc
 public class CountryRestControllerTest {
 
-    private static final Logger logger = Logger.getLogger(CountryRestControllerTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(CountryRestControllerTest.class);
     
     private static final int SPAIN_ID = 2;
 

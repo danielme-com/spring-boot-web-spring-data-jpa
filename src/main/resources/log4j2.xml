@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                pattern="%d{MM-dd-yyyy hh:mm:ss,SSS a} %5p %c{1}:%L - %m%n" />
+        </Console>
+
+        <RollingFile name="RollingFile"
+            fileName="./logs/spring-boot.log"
+            filePattern="./logs/spring-boot-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d{MM-dd-yyyy hh:mm:ss,SSS a} %5p %c{1}:%L -
+                    %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy
+                    size="5 MB" />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console" />
+            <!-- <AppenderRef ref="RollingFile" /> -->
+        </Root>
+
+    </Loggers>
+
+</Configuration>
