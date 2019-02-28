@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class CountryServiceJUnit5Test {
 
     @EnabledIf("#{systemProperties['os.name'].toLowerCase().contains('linux')}")
     @Test
+    @Disabled("This test always fails in Linux")
     public void testIf2() {
         fail("fail");
     }
