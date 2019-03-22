@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "countries")
@@ -14,10 +17,15 @@ public class Country extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false,
+            unique = true)
+    @NotNull
     private String name;
 
     @Column(nullable = false)
+    @NotNull
+    @Min(1)
+    @Max(2000000000)
     private Integer population;
 
     public Country() {
@@ -29,7 +37,6 @@ public class Country extends AuditableEntity {
         this.name = name;
         this.population = population;
     }
-
 
     public Long getId() {
         return id;

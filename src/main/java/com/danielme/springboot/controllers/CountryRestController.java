@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,7 @@ import com.danielme.springboot.services.CountryService;
 public class CountryRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(CountryRestController.class);
-    
+
     public static final String COUNTRY_RESOURCE = "/api/country";
 
     private final CountryService countryService;
@@ -42,7 +44,7 @@ public class CountryRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> addWithoutValidations(@RequestBody Country country) {
+    public ResponseEntity<Map<String, Object>> add(@RequestBody @Valid Country country) {
         try {
             Long id = countryService.insert(country);
             return new ResponseEntity<>(Collections.singletonMap("id", id), HttpStatus.CREATED);
