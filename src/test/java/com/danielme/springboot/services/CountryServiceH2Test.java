@@ -12,8 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@TestPropertySource(locations = "classpath:db-test.properties")
+@SpringBootTest(properties = { "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect" })
 @Sql("/test-h2.sql")
 @AutoConfigureTestDatabase
 public class CountryServiceH2Test {
