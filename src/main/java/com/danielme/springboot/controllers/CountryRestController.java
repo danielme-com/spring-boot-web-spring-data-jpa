@@ -37,10 +37,8 @@ public class CountryRestController {
     @GetMapping(value = "/{id}/")
     public ResponseEntity<Country> getById(@PathVariable("id") Long id) {
         Optional<Country> country = countryService.findById(id);
-        if (country.isPresent()) {
-            return new ResponseEntity<>(country.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return country.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
