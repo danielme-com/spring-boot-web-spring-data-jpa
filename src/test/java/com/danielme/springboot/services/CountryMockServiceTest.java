@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -27,7 +27,7 @@ public class CountryMockServiceTest {
 
     @Test
     public void test() {
-        when(countryRepository.findAll()).thenReturn(new LinkedList<>());
+        when(countryRepository.findAll()).thenReturn(new ArrayList<>());
 
         assertThat(countryService.findAll().isEmpty());
         verify(countryRepository, times(1)).findAll();
