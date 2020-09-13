@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -15,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
@@ -44,6 +47,14 @@ public class CountryRestControllerTest {
 
     @Autowired
     ObjectMapper objectmapper;
+
+    @TestConfiguration
+    static class TestConfigurationApp {
+        @Bean
+        ObjectMapper objectMapperPrettyPrinting() {
+            return new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        }
+    }
 
     @Test
     public void testGetSpain() throws Exception {
