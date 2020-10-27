@@ -1,6 +1,5 @@
 package com.danielme.springboot.controllers;
 
-import com.danielme.springboot.DemoApp;
 import com.danielme.springboot.entities.Country;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -31,14 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {DemoApp.class})
+@SpringBootTest
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-mysql.sql")
 @AutoConfigureMockMvc
 public class CountryRestControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(CountryRestControllerTest.class);
-    
+
     private static final int SPAIN_ID = 2;
 
     @Autowired
@@ -96,9 +95,9 @@ public class CountryRestControllerTest {
     @Test
     public void testRestAssured() {
         RestAssuredMockMvc.mockMvc(mockMvc);
-        
+
         when().get(CountryRestController.COUNTRY_RESOURCE + "/{id}/", SPAIN_ID)
-        .then().statusCode(HttpStatus.OK.value())
+                .then().statusCode(HttpStatus.OK.value())
                 .body("name", equalTo("Spain"));
     }
 

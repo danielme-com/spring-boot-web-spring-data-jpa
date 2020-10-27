@@ -16,7 +16,6 @@ import com.danielme.springboot.services.CountryService;
 @SpringBootApplication
 //@EnableConfigurationProperties(CustomProperties.class)
 @ConfigurationPropertiesScan
-@EnableJpaAuditing(auditorAwareRef = "customAuditorAware")
 public class DemoApp extends SpringBootServletInitializer// implements CommandLineRunner
 {
 
