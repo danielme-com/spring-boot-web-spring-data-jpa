@@ -29,7 +29,7 @@ public class CountryMockServiceTest {
     public void test() {
         when(countryRepository.findAll()).thenReturn(new ArrayList<>());
 
-        assertThat(countryService.findAll().isEmpty());
+        assertThat(countryService.findAll()).isEmpty();
         verify(countryRepository, times(1)).findAll();
     }
 
