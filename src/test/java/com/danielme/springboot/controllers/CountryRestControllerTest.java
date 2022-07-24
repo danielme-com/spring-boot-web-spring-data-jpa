@@ -4,8 +4,8 @@ import com.danielme.springboot.entities.Country;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.danielme.springboot.Dataset.NAME_SPAIN;
+import static com.danielme.springboot.Dataset.SPAIN_ID;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -29,16 +31,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-mysql.sql")
 @AutoConfigureMockMvc
-public class CountryRestControllerTest {
+class CountryRestControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(CountryRestControllerTest.class);
-
-    private static final int SPAIN_ID = 2;
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,50 +55,61 @@ public class CountryRestControllerTest {
     }
 
     @Test
-    public void testGetSpain() throws Exception {
+    void testGetSpain() throws Exception {
         String response = mockMvc.perform(get(CountryRestController.COUNTRY_RESOURCE + "/{id}/", SPAIN_ID))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("$.name", is("Spain"))).andReturn().getResponse()
+                .andExpect(jsonPath("$.name", is(NAME_SPAIN)))
+                .andReturn()
+                .getResponse()
                 .getContentAsString();
 
         logger.info("response: " + response);
     }
 
     @Test
-    public void testAddGermany() throws Exception {
+    void testAddGermany() throws Exception {
         Country country = new Country("Germany", 79778000);
 
         String response = mockMvc
                 .perform(post(CountryRestController.COUNTRY_RESOURCE)
                         .content(objectmapper.writeValueAsString(country))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.CREATED.value())).andReturn().getResponse()
+                .andExpect(status().is(HttpStatus.CREATED.value()))
+                .andReturn()
+                .getResponse()
                 .getContentAsString();
 
         logger.info(response);
     }
 
     @Test
-    public void testAddDuplicateCountry() throws Exception {
-        Country country = new Country("Spain", 1);
+    void testAddDuplicateCountry() throws Exception {
+        Country country = new Country(NAME_SPAIN, SPAIN_ID);
 
         String response = mockMvc
                 .perform(post(CountryRestController.COUNTRY_RESOURCE)
                         .content(objectmapper.writeValueAsString(country))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.INTERNAL_SERVER_ERROR.value())).andReturn()
-                .getResponse().getContentAsString();
+                .andExpect(status().is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
         logger.info(response);
     }
 
     @Test
-    public void testRestAssured() {
+    void testGetSpainRestAssured() {
         RestAssuredMockMvc.mockMvc(mockMvc);
 
-        when().get(CountryRestController.COUNTRY_RESOURCE + "/{id}/", SPAIN_ID)
-                .then().statusCode(HttpStatus.OK.value())
-                .body("name", equalTo("Spain"));
+        String response = when().get(CountryRestController.COUNTRY_RESOURCE + "/{id}/", SPAIN_ID)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("name", equalTo(NAME_SPAIN))
+                .extract()
+                .asString();
+
+        logger.info(response);
     }
 
 }

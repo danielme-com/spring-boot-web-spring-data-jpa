@@ -1,23 +1,23 @@
 package com.danielme.springboot.services;
 
 import com.danielme.springboot.repositories.CountryRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:db-test.properties")
-public class CountryMockServiceTest {
+class CountryServiceMockAnnotationTest {
 
     @MockBean
     CountryRepository countryRepository;
@@ -26,8 +26,8 @@ public class CountryMockServiceTest {
     CountryService countryService;
 
     @Test
-    public void test() {
-        when(countryRepository.findAll()).thenReturn(new ArrayList<>());
+    void testFindAllEmptyResponse() {
+        when(countryRepository.findAll()).thenReturn(Collections.emptyList());
 
         assertThat(countryService.findAll()).isEmpty();
         verify(countryRepository, times(1)).findAll();
