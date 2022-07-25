@@ -16,16 +16,16 @@ import com.danielme.springboot.services.CountryService;
 @SpringBootApplication
 //@EnableConfigurationProperties(CustomProperties.class)
 @ConfigurationPropertiesScan
-public class DemoApp extends SpringBootServletInitializer// implements CommandLineRunner
+public class CountriesApp extends SpringBootServletInitializer// implements CommandLineRunner
 {
 
-    //private static final Logger logger = LoggerFactory.getLogger(DemoApp.class);
+    //private static final Logger logger = LoggerFactory.getLogger(CountriesApp.class);
 
     // @Autowired
     // CountryService countryService;
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApp.class, args);
+        SpringApplication.run(CountriesApp.class, args);
     }
 
     /*
