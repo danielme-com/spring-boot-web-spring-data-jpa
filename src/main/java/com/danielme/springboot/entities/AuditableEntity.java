@@ -1,32 +1,27 @@
 package com.danielme.springboot.entities;
 
-import java.util.Calendar;
-
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@EntityListeners({ AuditingEntityListener.class })
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+import java.time.LocalDateTime;
+
+@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 public class AuditableEntity {
 
     @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Calendar createdDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Calendar lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     @CreatedBy
     @Column(nullable = false)
@@ -35,19 +30,19 @@ public class AuditableEntity {
     @LastModifiedBy
     private String lastModifiedBy;
 
-    public Calendar getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Calendar createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Calendar getLastModifiedDate() {
+    public LocalDateTime getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Calendar lastModifiedDate) {
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

@@ -3,6 +3,8 @@ package com.danielme.springboot.controllers;
 import com.danielme.springboot.entities.Country;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +52,10 @@ class CountryRestControllerTest {
     static class TestConfigurationApp {
         @Bean
         ObjectMapper objectMapperPrettyPrinting() {
-            return new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+            return JsonMapper.builder()
+                    .enable(SerializationFeature.INDENT_OUTPUT)
+                    .addModule(new JavaTimeModule())
+                    .build();
         }
     }
 
