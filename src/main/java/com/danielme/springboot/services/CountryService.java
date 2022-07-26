@@ -3,6 +3,7 @@ package com.danielme.springboot.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.danielme.springboot.model.CountryRequest;
 import org.springframework.stereotype.Service;
 
 import com.danielme.springboot.entities.Country;
@@ -25,8 +26,9 @@ public class CountryService {
         return countryRepository.findById(id);
     }
     
-    public Long create(Country country) {
-        country.setId(null);
-        return countryRepository.save(country).getId();
+    public Long create(CountryRequest newCountry) {
+        Country countryEntity = new Country(newCountry.getName(), newCountry.getPopulation());
+        return countryRepository.save(countryEntity).getId();
     }
+
 }

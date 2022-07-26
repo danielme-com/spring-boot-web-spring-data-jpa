@@ -1,6 +1,7 @@
 package com.danielme.springboot.controllers;
 
 import com.danielme.springboot.entities.Country;
+import com.danielme.springboot.model.CountryRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -77,7 +78,7 @@ class CountryRestControllerTest {
 
     @Test
     void testAddGermany() throws Exception {
-        Country country = new Country("Germany", 79778000);
+        CountryRequest country = new CountryRequest("Germany", 79778000);
 
         String response = mockMvc
                 .perform(post(CountryRestController.COUNTRIES_RESOURCE)

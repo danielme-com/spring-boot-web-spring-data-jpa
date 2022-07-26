@@ -1,6 +1,7 @@
 package com.danielme.springboot.controllers;
 
 import com.danielme.springboot.entities.Country;
+import com.danielme.springboot.model.CountryRequest;
 import com.danielme.springboot.services.CountryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class CountryRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> add(@RequestBody @Valid Country country) {
+    public ResponseEntity<Map<String, Object>> add(@RequestBody @Valid CountryRequest country) {
         Long id = countryService.create(country);
         return new ResponseEntity<>(Collections.singletonMap("id", id), HttpStatus.CREATED);
     }
