@@ -29,7 +29,7 @@ public class CountryRestController {
         return countryService.findAll();
     }
 
-    @GetMapping(value = "/{id}/")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Country> getById(@PathVariable Long id) {
         return countryService
                 .findById(id)
@@ -41,6 +41,19 @@ public class CountryRestController {
     public ResponseEntity<Map<String, Object>> add(@RequestBody @Valid CountryRequest country) {
         Long id = countryService.create(country);
         return new ResponseEntity<>(Collections.singletonMap("id", id), HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id,
+                                       @RequestBody @Valid CountryRequest countryRequest) {
+        boolean wasUpdated = countryService.update(id, countryRequest);
+        return wasUpdated ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        countryService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

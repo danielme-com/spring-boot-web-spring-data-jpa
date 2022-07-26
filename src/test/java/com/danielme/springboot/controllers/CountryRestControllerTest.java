@@ -2,6 +2,7 @@ package com.danielme.springboot.controllers;
 
 import com.danielme.springboot.entities.Country;
 import com.danielme.springboot.model.CountryRequest;
+import com.danielme.springboot.repositories.CountryRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -26,8 +27,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.danielme.springboot.Dataset.*;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -52,6 +55,9 @@ class CountryRestControllerTest {
 
     @Autowired
     ObjectMapper objectmapper;
+
+    @Autowired
+    CountryRepository countryRepository;
 
     @TestConfiguration
     static class TestConfigurationApp {
@@ -112,7 +118,7 @@ class CountryRestControllerTest {
     void testGetSpainRestAssured() {
         RestAssuredMockMvc.mockMvc(mockMvc);
 
-        String response = when().get(CountryRestController.COUNTRIES_RESOURCE + "/{id}/", SPAIN_ID)
+        String response = when().get(CountryRestController.COUNTRIES_RESOURCE + "/{id}", SPAIN_ID)
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("name", equalTo(NAME_SPAIN))
@@ -141,6 +147,42 @@ class CountryRestControllerTest {
                         NAME_SPAIN);
 
         logger.info(objectmapper.writeValueAsString(countries));
+    }
+
+    @Test
+    void testUpdateRestAssured() {
+        RestAssuredMockMvc.mockMvc(mockMvc);
+        String newName = "new name";
+        Integer newPopulation = 1000;
+        CountryRequest countryRequest = new CountryRequest(newName, newPopulation);
+
+        given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(countryRequest)
+                .when()
+                .put(CountryRestController.COUNTRIES_RESOURCE + "/" + SPAIN_ID)
+                .then()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+
+        Optional<Country> country = countryRepository.findById((long) SPAIN_ID);
+        assertThat(country).isNotEmpty();
+        assertThat(country.get().getName()).isEqualTo(newName);
+        assertThat(country.get().getPopulation()).isEqualTo(newPopulation);
+    }
+
+    @Test
+    void testDeleteRestAssured() {
+        RestAssuredMockMvc.mockMvc(mockMvc);
+
+        given()
+                .when()
+                .delete(CountryRestController.COUNTRIES_RESOURCE + "/" + SPAIN_ID)
+                .then()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+
+        Optional<Country> country = countryRepository.findById((long) SPAIN_ID);
+        assertThat(country).isEmpty();
     }
 
 }
