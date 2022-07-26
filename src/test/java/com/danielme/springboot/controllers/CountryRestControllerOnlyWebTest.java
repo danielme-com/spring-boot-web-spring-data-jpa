@@ -39,7 +39,7 @@ class CountryRestControllerOnlyWebTest {
     void testGetSpain() throws Exception {
         Mockito.when(countryService.findById((long) SPAIN_ID)).thenReturn(Optional.of(new Country("Spain", 0)));
 
-        String response = mockMvc.perform(get(CountryRestController.COUNTRY_RESOURCE + "/{id}/", SPAIN_ID))
+        String response = mockMvc.perform(get(CountryRestController.COUNTRIES_RESOURCE + "/{id}/", SPAIN_ID))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.name", is("Spain")))
                 .andReturn().getResponse()

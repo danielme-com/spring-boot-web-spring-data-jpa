@@ -1,10 +1,12 @@
 package com.danielme.springboot.controllers;
 
 import com.danielme.springboot.entities.Country;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,9 +24,11 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.danielme.springboot.Dataset.NAME_SPAIN;
-import static com.danielme.springboot.Dataset.SPAIN_ID;
+import java.util.List;
+
+import static com.danielme.springboot.Dataset.*;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -61,7 +65,7 @@ class CountryRestControllerTest {
 
     @Test
     void testGetSpain() throws Exception {
-        String response = mockMvc.perform(get(CountryRestController.COUNTRY_RESOURCE + "/{id}/", SPAIN_ID))
+        String response = mockMvc.perform(get(CountryRestController.COUNTRIES_RESOURCE + "/{id}/", SPAIN_ID))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.name", is(NAME_SPAIN)))
                 .andReturn()
@@ -76,7 +80,7 @@ class CountryRestControllerTest {
         Country country = new Country("Germany", 79778000);
 
         String response = mockMvc
-                .perform(post(CountryRestController.COUNTRY_RESOURCE)
+                .perform(post(CountryRestController.COUNTRIES_RESOURCE)
                         .content(objectmapper.writeValueAsString(country))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()))
@@ -88,14 +92,14 @@ class CountryRestControllerTest {
     }
 
     @Test
-    void testAddDuplicateCountry() throws Exception {
-        Country country = new Country(NAME_SPAIN, SPAIN_ID);
+    void testNoNameCreateCountry() throws Exception {
+        Country country = new Country(null, 1);
 
         String response = mockMvc
-                .perform(post(CountryRestController.COUNTRY_RESOURCE)
+                .perform(post(CountryRestController.COUNTRIES_RESOURCE)
                         .content(objectmapper.writeValueAsString(country))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -107,7 +111,7 @@ class CountryRestControllerTest {
     void testGetSpainRestAssured() {
         RestAssuredMockMvc.mockMvc(mockMvc);
 
-        String response = when().get(CountryRestController.COUNTRY_RESOURCE + "/{id}/", SPAIN_ID)
+        String response = when().get(CountryRestController.COUNTRIES_RESOURCE + "/{id}/", SPAIN_ID)
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("name", equalTo(NAME_SPAIN))
@@ -115,6 +119,27 @@ class CountryRestControllerTest {
                 .asString();
 
         logger.info(response);
+    }
+
+    @Test
+    void testGetAllRestAssured() throws JsonProcessingException {
+        RestAssuredMockMvc.mockMvc(mockMvc);
+
+        List<Country> countries = when().get(CountryRestController.COUNTRIES_RESOURCE)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(new TypeRef<>() {
+                });
+
+        assertThat(countries)
+                .extracting("name")
+                .containsExactlyInAnyOrder(
+                        NAME_COLOMBIA,
+                        NAME_MEXICO,
+                        NAME_SPAIN);
+
+        logger.info(objectmapper.writeValueAsString(countries));
     }
 
 }
