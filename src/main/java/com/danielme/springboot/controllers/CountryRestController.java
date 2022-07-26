@@ -38,7 +38,7 @@ public class CountryRestController {
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> add(@RequestBody @Valid Country country) {
-        Long id = countryService.insert(country);
+        Long id = countryService.create(country);
         return new ResponseEntity<>(Collections.singletonMap("id", id), HttpStatus.CREATED);
     }
 

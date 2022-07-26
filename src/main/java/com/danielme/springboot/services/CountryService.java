@@ -25,7 +25,7 @@ public class CountryService {
         return countryRepository.findById(id);
     }
     
-    public Long insert(Country country) {
+    public Long create(Country country) {
         country.setId(null);
         return countryRepository.save(country).getId();
     }
