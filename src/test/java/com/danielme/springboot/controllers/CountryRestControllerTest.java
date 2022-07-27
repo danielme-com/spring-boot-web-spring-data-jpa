@@ -100,7 +100,7 @@ class CountryRestControllerTest {
 
     @Test
     void testNoNameCreateCountry() throws Exception {
-        Country country = new Country(null, 1);
+        CountryRequest country = new CountryRequest(null, 1);
 
         String response = mockMvc
                 .perform(post(CountryRestController.COUNTRIES_RESOURCE)
