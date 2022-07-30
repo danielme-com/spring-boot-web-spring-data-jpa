@@ -12,6 +12,8 @@ import io.restassured.common.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,17 +173,18 @@ class CountryRestControllerTest {
         assertThat(country.get().getPopulation()).isEqualTo(newPopulation);
     }
 
-    @Test
-    void testDeleteRestAssured() {
+    @ParameterizedTest
+    @ValueSource(longs = {SPAIN_ID, NON_EXISTS_ID})
+    void testDeleteRestAssured(Long id) {
         RestAssuredMockMvc.mockMvc(mockMvc);
 
         given()
                 .when()
-                .delete(CountryRestController.COUNTRIES_RESOURCE + "/" + SPAIN_ID)
+                .delete(CountryRestController.COUNTRIES_RESOURCE + "/" + id)
                 .then()
                 .statusCode(HttpStatus.NO_CONTENT.value());
 
-        Optional<Country> country = countryRepository.findById((long) SPAIN_ID);
+        Optional<Country> country = countryRepository.findById((long) id);
         assertThat(country).isEmpty();
     }
 

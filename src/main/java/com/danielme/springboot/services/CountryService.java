@@ -43,7 +43,9 @@ public class CountryService {
     }
 
     public void delete(Long id) {
-        countryRepository.deleteById(id);
+        if (countryRepository.existsById(id)) {
+            countryRepository.deleteById(id);
+        }
     }
 
 }

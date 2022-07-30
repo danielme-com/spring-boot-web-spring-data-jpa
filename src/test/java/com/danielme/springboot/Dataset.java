@@ -9,5 +9,6 @@ public final class Dataset {
     public static final String NAME_MEXICO = "Mexico";
     public static final String NAME_COLOMBIA = "Colombia";
     public static final int SPAIN_ID = 2;
+    public static final int NON_EXISTS_ID = -454545;
 
 }
