@@ -10,21 +10,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class CountriesApp extends SpringBootServletInitializer /*implements CommandLineRunner*/ {
+public class CountriesApp extends SpringBootServletInitializer implements CommandLineRunner {
 
-    //private static final Logger logger = LoggerFactory.getLogger(CountriesApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(CountriesApp.class);
 
-    /*@Autowired
-    CountryService countryService;*/
+    @Autowired
+    CountryService countryService;
 
     public static void main(String[] args) {
         SpringApplication.run(CountriesApp.class, args);
     }
 
-    /*@Override
+    @Override
     public void run(String... arg0) {
-        int size = countryService.findAll().size();
-        logger.info("countries: {}", size);
-    }*/
+        countryService
+                .findAll()
+                .forEach(c -> logger.info(c.toString()));
+    }
 
 }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "countries")
-public class Country extends AuditableEntity {
+public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,15 @@ public class Country extends AuditableEntity {
         super();
         this.name = name;
         this.population = population;
+    }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", population=" + population +
+                '}';
     }
 
     public Long getId() {
