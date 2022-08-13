@@ -173,6 +173,23 @@ class CountryRestControllerTest {
         assertThat(country.get().getPopulation()).isEqualTo(newPopulation);
     }
 
+    @Test
+    void testUpdateNotFoundEntityRestAssured() {
+        RestAssuredMockMvc.mockMvc(mockMvc);
+        String newName = "new name";
+        Integer newPopulation = 1000;
+        CountryRequest countryRequest = new CountryRequest(newName, newPopulation);
+
+        given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(countryRequest)
+                .when()
+                .put(CountryRestController.COUNTRIES_RESOURCE + "/" + NON_EXISTS_ID)
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
     @ParameterizedTest
     @ValueSource(longs = {SPAIN_ID, NON_EXISTS_ID})
     void testDeleteRestAssured(Long id) {
