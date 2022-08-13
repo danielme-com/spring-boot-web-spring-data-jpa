@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -26,8 +27,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:db-test.properties")
 @Sql("/test-mysql.sql")
 @AutoConfigureMockMvc
+@AutoConfigureWebTestClient
 class CountryRestControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(CountryRestControllerTest.class);
@@ -128,6 +133,21 @@ class CountryRestControllerTest {
                 .asString();
 
         logger.info(response);
+    }
+
+    @Test
+    void testGetSpainWebTestClient(@Autowired WebTestClient client) {
+        byte[] response = client.get().uri(CountryRestController.COUNTRIES_RESOURCE + "/{id}", SPAIN_ID)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("name").isEqualTo(NAME_SPAIN)
+                .returnResult()
+                .getResponseBody();
+
+        logger.info(new String(response, StandardCharsets.UTF_8) );
     }
 
     @Test

@@ -76,6 +76,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- WebTestClient-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- SOLO NECESARIO PARA USAR JUNIT 5 en Spring Boot < 2.2 -->
 
         <!-- <dependency>
