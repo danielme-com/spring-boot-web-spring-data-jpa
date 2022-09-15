@@ -31,7 +31,7 @@ class CountryServiceTest {
         assertEquals(3, countries.size());
         //assertj
         assertThat(countries)
-                .extracting("name")
+                .extracting(Country::getName)
                 .containsExactlyInAnyOrder(
                         NAME_COLOMBIA,
                         NAME_MEXICO,

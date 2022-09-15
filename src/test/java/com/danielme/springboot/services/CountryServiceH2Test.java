@@ -28,7 +28,7 @@ class CountryServiceH2Test {
         List<Country> countries = countryService.findAll();
 
         assertThat(countries)
-                .extracting("name")
+                .extracting(Country::getName)
                 .containsExactlyInAnyOrder(
                         Dataset.NAME_MEXICO,
                         Dataset.NAME_SPAIN);

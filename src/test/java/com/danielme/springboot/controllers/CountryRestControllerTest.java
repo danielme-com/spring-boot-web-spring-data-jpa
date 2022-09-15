@@ -162,7 +162,7 @@ class CountryRestControllerTest {
                 });
 
         assertThat(countries)
-                .extracting("name")
+                .extracting(Country::getName)
                 .containsExactlyInAnyOrder(
                         NAME_COLOMBIA,
                         NAME_MEXICO,
