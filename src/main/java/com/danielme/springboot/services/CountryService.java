@@ -33,13 +33,17 @@ public class CountryService {
 
     @Transactional
     public boolean update(Long id, CountryRequest countryRequest) {
-        Optional<Country> country = countryRepository.findById(id);
-        if (country.isPresent()) {
-            country.get().setName(countryRequest.getName());
-            country.get().setPopulation(countryRequest.getPopulation());
-            return true;
-        }
-        return false;
+        return countryRepository.findById(id)
+                .map(country -> {
+                    copy(countryRequest, country);
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    private void copy(CountryRequest countryRequest, Country country) {
+        country.setName(countryRequest.getName());
+        country.setPopulation(countryRequest.getPopulation());
     }
 
     public void delete(Long id) {
