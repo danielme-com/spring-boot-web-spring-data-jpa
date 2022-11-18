@@ -21,12 +21,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -75,14 +78,25 @@ class CountryRestControllerTest {
 
     @Test
     void testGetSpain() throws Exception {
-        String response = mockMvc.perform(get(CountryRestController.COUNTRIES_RESOURCE + "/{id}/", SPAIN_ID))
+        mockMvc.perform(get(CountryRestController.COUNTRIES_RESOURCE + "/{id}/", SPAIN_ID))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name", is(NAME_SPAIN)))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+    }
+
+    @Test
+    void testGetSpainAgainstFile() throws Exception {
+        String spainResponseJson = mockMvc.perform(get(CountryRestController.COUNTRIES_RESOURCE + "/{id}/", SPAIN_ID))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("$.name", is(NAME_SPAIN)))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        logger.info("response: " + response);
+        Resource resource = new ClassPathResource("/responses/spain.json");
+        assertThat(resource.getFile())
+                .hasContent(spainResponseJson);
     }
 
     @Test
@@ -143,7 +157,7 @@ class CountryRestControllerTest {
                 .returnResult()
                 .getResponseBody();
 
-        logger.info(new String(response, StandardCharsets.UTF_8) );
+        logger.info(new String(response, StandardCharsets.UTF_8));
     }
 
     @Test
