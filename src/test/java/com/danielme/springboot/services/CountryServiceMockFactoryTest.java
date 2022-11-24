@@ -28,7 +28,6 @@ class CountryServiceMockFactoryTest {
         when(countryRepository.findAll()).thenReturn(Collections.emptyList());
 
         assertThat(countryService.findAll()).isEmpty();
-        verify(countryRepository, times(1)).findAll();
     }
 
 }
