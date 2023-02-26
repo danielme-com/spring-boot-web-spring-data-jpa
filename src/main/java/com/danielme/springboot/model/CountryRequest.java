@@ -1,13 +1,11 @@
 package com.danielme.springboot.model;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 public class CountryRequest {
 
     @NotEmpty
+    @Size(max = 255)
     private String name;
 
     @NotNull
