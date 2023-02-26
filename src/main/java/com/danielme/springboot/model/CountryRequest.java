@@ -38,4 +38,12 @@ public class CountryRequest {
     public void setPopulation(Integer population) {
         this.population = population;
     }
+
+    @Override
+    public String toString() {
+        return "CountryRequest{" +
+                "name='" + name + '\'' +
+                ", population=" + population +
+                '}';
+    }
 }
