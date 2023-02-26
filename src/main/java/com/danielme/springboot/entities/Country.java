@@ -1,6 +1,6 @@
 package com.danielme.springboot.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "countries")
