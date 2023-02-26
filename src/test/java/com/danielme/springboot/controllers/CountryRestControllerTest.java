@@ -78,7 +78,7 @@ class CountryRestControllerTest {
 
     @Test
     void testGetSpain() throws Exception {
-        mockMvc.perform(get(CountryRestController.COUNTRIES_RESOURCE + "/{id}/", SPAIN_ID))
+        mockMvc.perform(get(CountryRestController.COUNTRIES_RESOURCE + "/{id}", SPAIN_ID))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name", is(NAME_SPAIN)))
                 .andReturn()
@@ -88,7 +88,7 @@ class CountryRestControllerTest {
 
     @Test
     void testGetSpainAgainstFile() throws Exception {
-        String spainResponseJson = mockMvc.perform(get(CountryRestController.COUNTRIES_RESOURCE + "/{id}/", SPAIN_ID))
+        String spainResponseJson = mockMvc.perform(get(CountryRestController.COUNTRIES_RESOURCE + "/{id}", SPAIN_ID))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andReturn()
                 .getResponse()
