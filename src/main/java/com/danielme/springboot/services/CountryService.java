@@ -16,10 +16,5 @@ public interface CountryService {
 
     boolean update(Long id, CountryRequest countryRequest);
 
-    default void copy(CountryRequest countryRequest, Country country) {
-        country.setName(countryRequest.getName());
-        country.setPopulation(countryRequest.getPopulation());
-    }
-
     void delete(Long id);
 }

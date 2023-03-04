@@ -46,6 +46,11 @@ public class CountryServiceImpl implements CountryService {
                 .orElse(false);
     }
 
+    private void copy(CountryRequest countryRequest, Country country) {
+        country.setName(countryRequest.getName());
+        country.setPopulation(countryRequest.getPopulation());
+    }
+
     @Override
     public void delete(Long id) {
         if (countryRepository.existsById(id)) {
